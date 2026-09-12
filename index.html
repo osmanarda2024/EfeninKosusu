@@ -777,50 +777,94 @@
     font-size:12px;
   }
 
+  .lang-switch{
+    position:fixed;
+    top:10px;
+    right:10px;
+    z-index:70;
+    display:flex;
+    gap:3px;
+    background:rgba(28,15,21,0.6);
+    border:1px solid rgba(227,178,60,0.4);
+    border-radius:999px;
+    padding:4px;
+  }
+
+  .lang-btn{
+    font-family:var(--font-body);
+    font-weight:800;
+    font-size:11px;
+    letter-spacing:0.4px;
+    color:var(--parchment-dim);
+    background:transparent;
+    border:none;
+    border-radius:999px;
+    padding:5px 10px;
+    cursor:pointer;
+  }
+
+  .lang-btn:hover{ color:var(--cream); }
+
+  .lang-btn.active{
+    background:linear-gradient(180deg, #f0c661, var(--gold-dim));
+    color:var(--ink);
+  }
+
+  .lang-btn:focus-visible{
+    outline:2px solid var(--gold);
+    outline-offset:2px;
+  }
+
   @media (prefers-reduced-motion: reduce){
     .btn{ transition:none; }
   }
 </style>
 
+<div class="lang-switch" id="langSwitch" role="group" aria-label="Dil / Language / Sprache">
+  <button type="button" class="lang-btn" data-lang="tr">TR</button>
+  <button type="button" class="lang-btn" data-lang="en">EN</button>
+  <button type="button" class="lang-btn" data-lang="de">DE</button>
+</div>
+
 <div class="update-banner hidden" id="updateBanner">
-  <p>Efe'nin Koşusu'nda yeni bir sürüm hazır!</p>
-  <button class="btn" id="updateReloadBtn" type="button">Şimdi Güncelle</button>
+  <p data-i18n="update.banner">Efe'nin Koşusu'nda yeni bir sürüm hazır!</p>
+  <button class="btn" id="updateReloadBtn" type="button" data-i18n="update.reloadBtn">Şimdi Güncelle</button>
 </div>
 
 <div class="name-gate" id="nameGate">
   <div class="name-card">
-    <h2>Koşucunun Adı</h2>
-    <p>Efe'nin yanında kimin koştuğunu bilelim. Bu adı sana bir daha sormayacağız.</p>
-    <input type="text" id="nameInput" maxlength="18" autocomplete="off" spellcheck="false" placeholder="Adını yaz...">
-    <button class="btn" id="nameSubmitBtn" type="button">Koşuya Kaydol</button>
-    <button class="link-btn" id="showImportBtn" type="button">Başka cihazdan kayıt kodun mu var?</button>
+    <h2 data-i18n="nameGate.title">Koşucunun Adı</h2>
+    <p data-i18n="nameGate.desc">Efe'nin yanında kimin koştuğunu bilelim. Bu adı sana bir daha sormayacağız.</p>
+    <input type="text" id="nameInput" maxlength="18" autocomplete="off" spellcheck="false" placeholder="Adını yaz..." data-i18n-placeholder="nameGate.inputPlaceholder">
+    <button class="btn" id="nameSubmitBtn" type="button" data-i18n="nameGate.submitBtn">Koşuya Kaydol</button>
+    <button class="link-btn" id="showImportBtn" type="button" data-i18n="nameGate.showImportBtn">Başka cihazdan kayıt kodun mu var?</button>
     <div class="import-section hidden" id="importSection">
-      <textarea id="importInput" rows="3" spellcheck="false" placeholder="EFE1- ile başlayan kodu buraya yapıştır"></textarea>
-      <button class="btn secondary" id="importBtn" type="button">Kod ile Devam Et</button>
-      <p id="importError" class="hidden">Kod geçersiz görünüyor, kontrol edip tekrar dener misin?</p>
+      <textarea id="importInput" rows="3" spellcheck="false" placeholder="EFE1- ile başlayan kodu buraya yapıştır" data-i18n-placeholder="nameGate.importPlaceholder"></textarea>
+      <button class="btn secondary" id="importBtn" type="button" data-i18n="nameGate.importBtn">Kod ile Devam Et</button>
+      <p id="importError" class="hidden" data-i18n="nameGate.importError">Kod geçersiz görünüyor, kontrol edip tekrar dener misin?</p>
     </div>
   </div>
 </div>
 
 <div class="stage">
   <div class="titlebar">
-    <h1>Efe'nin Koşusu</h1>
-    <p class="subtitle" id="subtitleText">Anadolu yamaçlarında bir zeybek koşusu</p>
+    <h1 data-i18n="title.h1">Efe'nin Koşusu</h1>
+    <p class="subtitle" id="subtitleText" data-i18n="title.subtitleDefault">Anadolu yamaçlarında bir zeybek koşusu</p>
   </div>
 
   <div class="frame" id="gameFrame">
     <div class="kilim" aria-hidden="true"></div>
     <div class="hud">
       <div class="plaque">
-        <span class="plaque-label">Skor</span>
+        <span class="plaque-label" data-i18n="hud.score">Skor</span>
         <span class="plaque-value" id="scoreOut">0</span>
       </div>
       <div class="plaque">
-        <span class="plaque-label">Altın</span>
+        <span class="plaque-label" data-i18n="hud.coins">Altın</span>
         <span class="plaque-value" id="walletHudOut">0</span>
       </div>
       <div class="plaque">
-        <span class="plaque-label">Rekor</span>
+        <span class="plaque-label" data-i18n="hud.record">Rekor</span>
         <span class="plaque-value" id="highOut">0</span>
       </div>
     </div>
@@ -829,26 +873,26 @@
       <canvas id="game" role="img" aria-label="Efe'nin Koşusu oyun alanı: karakter Efe önündeki engellerden zıplayarak kaçar, altın toplar ve nazar boncuğuyla korunur"></canvas>
 
       <div class="hud-top">
-        <button class="icon-btn" id="muteBtn" type="button">Ses: Açık</button>
-        <button class="icon-btn" id="pauseBtn" type="button">Duraklat</button>
+        <button class="icon-btn" id="muteBtn" type="button" data-i18n="hud.soundOn">Ses: Açık</button>
+        <button class="icon-btn" id="pauseBtn" type="button" data-i18n="hud.pause">Duraklat</button>
       </div>
 
       <div class="overlay" id="startOverlay">
         <div class="overlay-card">
-          <h2>Efe koşuya hazır</h2>
-          <p>Önüne çıkan kayalara, dikenli çalılara ve taş duvarlara çarpmadan olabildiğince uzağa koş. Hız gittikçe artar!</p>
-          <p class="legend">Altın keseler puan katar · nazar boncuğu bir çarpışmadan seni korur</p>
-          <button class="btn" id="startBtn" type="button">Koşuya Başla</button>
-          <button class="btn secondary" id="marketBtnStart" type="button">Efe Pazarı</button>
-          <p class="hint">Boşluk / Yukarı Ok / Dokun = Zıpla · P = Duraklat</p>
-          <button class="link-btn" id="showGripanterBtn" type="button">Admin Kodu</button>
+          <h2 data-i18n="start.title">Efe koşuya hazır</h2>
+          <p data-i18n="start.desc">Önüne çıkan kayalara, dikenli çalılara ve taş duvarlara çarpmadan olabildiğince uzağa koş. Hız gittikçe artar!</p>
+          <p class="legend" data-i18n="start.legend">Altın keseler puan katar · nazar boncuğu bir çarpışmadan seni korur</p>
+          <button class="btn" id="startBtn" type="button" data-i18n="start.startBtn">Koşuya Başla</button>
+          <button class="btn secondary" id="marketBtnStart" type="button" data-i18n="market.title">Efe Pazarı</button>
+          <p class="hint" data-i18n="start.hint">Boşluk / Yukarı Ok / Dokun = Zıpla · P = Duraklat</p>
+          <button class="link-btn" id="showGripanterBtn" type="button" data-i18n="start.adminBtn">Admin Kodu</button>
           <div class="import-section hidden" id="gripanterSection">
-            <textarea id="gripanterInput" rows="1" spellcheck="false" placeholder="Admin kodunu yaz"></textarea>
-            <button class="btn secondary" id="gripanterSubmitBtn" type="button">Uygula</button>
+            <textarea id="gripanterInput" rows="1" spellcheck="false" placeholder="Admin kodunu yaz" data-i18n-placeholder="start.adminPlaceholder"></textarea>
+            <button class="btn secondary" id="gripanterSubmitBtn" type="button" data-i18n="start.adminApply">Uygula</button>
             <p class="hint" id="gripanterStatus"></p>
             <div class="hidden" id="setGripanterSection">
-              <textarea id="newGripanterInput" rows="1" spellcheck="false" placeholder="Yeni admin kodu belirle"></textarea>
-              <button class="btn secondary" id="setGripanterBtn" type="button">Kodu Değiştir</button>
+              <textarea id="newGripanterInput" rows="1" spellcheck="false" placeholder="Yeni admin kodu belirle" data-i18n-placeholder="start.adminNewPlaceholder"></textarea>
+              <button class="btn secondary" id="setGripanterBtn" type="button" data-i18n="start.adminChangeBtn">Kodu Değiştir</button>
             </div>
           </div>
         </div>
@@ -856,18 +900,18 @@
 
       <div class="overlay hidden" id="overOverlay">
         <div class="overlay-card">
-          <h2>Efe düştü!</h2>
+          <h2 data-i18n="over.title">Efe düştü!</h2>
           <p id="finalScoreText">Skor: 0</p>
           <p id="runCoinsText">+0 Altın kazandın</p>
-          <p id="newRecordText" class="hidden">Yeni rekor kırdın!</p>
-          <button class="btn" id="restartBtn" type="button">Tekrar Koş</button>
-          <button class="btn secondary" id="marketBtnOver" type="button">Efe Pazarı</button>
-          <p class="lb-title">İlk 5 Skor</p>
+          <p id="newRecordText" class="hidden" data-i18n="over.newRecord">Yeni rekor kırdın!</p>
+          <button class="btn" id="restartBtn" type="button" data-i18n="over.restartBtn">Tekrar Koş</button>
+          <button class="btn secondary" id="marketBtnOver" type="button" data-i18n="market.title">Efe Pazarı</button>
+          <p class="lb-title" data-i18n="over.topScores">İlk 5 Skor</p>
           <ol class="leaderboard" id="leaderboardList"></ol>
-          <p class="lb-title">Kayıt Kodun</p>
-          <p class="legend">Bu kodu kopyala, başka bir cihazda oyunu ilk açtığında yapıştır — ilerlemen aynen devam etsin.</p>
+          <p class="lb-title" data-i18n="over.saveCodeTitle">Kayıt Kodun</p>
+          <p class="legend" data-i18n="over.saveCodeDesc">Bu kodu kopyala, başka bir cihazda oyunu ilk açtığında yapıştır — ilerlemen aynen devam etsin.</p>
           <textarea id="saveCodeOutput" class="save-code" rows="3" readonly spellcheck="false"></textarea>
-          <button class="btn secondary" id="copySaveBtn" type="button">Kodu Kopyala</button>
+          <button class="btn secondary" id="copySaveBtn" type="button" data-i18n="over.copyBtn">Kodu Kopyala</button>
           <p class="hint" id="copyStatus"></p>
         </div>
       </div>
@@ -878,20 +922,20 @@
 
   <div class="market hidden" id="marketPanel">
     <div class="market-header">
-      <h2>Efe Pazarı</h2>
-      <p>Koşarken topladığın altın keselerle Efe'ye kıyafet kuşandır ya da kalıcı süper güçler edin.</p>
-      <div class="wallet-badge"><span class="coin-dot" aria-hidden="true"></span><span id="walletMarketOut">0</span> Altın</div>
+      <h2 data-i18n="market.title">Efe Pazarı</h2>
+      <p data-i18n="market.desc">Koşarken topladığın altın keselerle Efe'ye kıyafet kuşandır ya da kalıcı süper güçler edin.</p>
+      <div class="wallet-badge"><span class="coin-dot" aria-hidden="true"></span><span id="walletMarketOut">0</span> <span data-i18n="hud.coins">Altın</span></div>
       <div class="market-tabs">
-        <button class="tab-btn active" id="tabCharBtn" type="button">Karakterler</button>
-        <button class="tab-btn" id="tabPowerBtn" type="button">Süper Güçler</button>
+        <button class="tab-btn active" id="tabCharBtn" type="button" data-i18n="market.tabChar">Karakterler</button>
+        <button class="tab-btn" id="tabPowerBtn" type="button" data-i18n="market.tabPower">Süper Güçler</button>
       </div>
     </div>
     <div class="shop-grid" id="shopGrid"></div>
     <div class="shop-grid hidden" id="powersGrid"></div>
-    <button class="btn" id="marketCloseBtn" type="button">Pazardan Çık</button>
+    <button class="btn" id="marketCloseBtn" type="button" data-i18n="market.closeBtn">Pazardan Çık</button>
   </div>
 
-  <div class="controls-hint" id="controlsHint">
+  <div class="controls-hint" id="controlsHint" data-i18n-html="controls.hintHtml">
     <span class="key">Boşluk</span> ya da <span class="key">↑</span> ile zıpla · <span class="key">P</span> ile duraklat · mobilde ekrana dokun
   </div>
   <p class="version-tag">Sürüm 19.1</p>
@@ -961,6 +1005,365 @@
   var setGripanterSection = document.getElementById('setGripanterSection');
   var newGripanterInput = document.getElementById('newGripanterInput');
   var setGripanterBtn = document.getElementById('setGripanterBtn');
+  var langButtons = document.querySelectorAll('.lang-btn');
+
+  // ---------- language / i18n ----------
+  var LANG_KEY = 'efe-kosusu-lang';
+  var currentLang = 'tr';
+  try { currentLang = localStorage.getItem(LANG_KEY) || 'tr'; } catch(e){ currentLang = 'tr'; }
+  if (['tr','en','de'].indexOf(currentLang) === -1) currentLang = 'tr';
+
+  var I18N = {
+    tr: {
+      'update.banner': "Efe'nin Koşusu'nda yeni bir sürüm hazır!",
+      'update.reloadBtn': 'Şimdi Güncelle',
+      'nameGate.title': 'Koşucunun Adı',
+      'nameGate.desc': "Efe'nin yanında kimin koştuğunu bilelim. Bu adı sana bir daha sormayacağız.",
+      'nameGate.inputPlaceholder': 'Adını yaz...',
+      'nameGate.submitBtn': 'Koşuya Kaydol',
+      'nameGate.showImportBtn': 'Başka cihazdan kayıt kodun mu var?',
+      'nameGate.importPlaceholder': 'EFE1- ile başlayan kodu buraya yapıştır',
+      'nameGate.importBtn': 'Kod ile Devam Et',
+      'nameGate.importError': 'Kod geçersiz görünüyor, kontrol edip tekrar dener misin?',
+      'title.h1': "Efe'nin Koşusu",
+      'title.subtitleDefault': 'Anadolu yamaçlarında bir zeybek koşusu',
+      'title.subtitleNamed': '{name} için Anadolu yamaçlarında bir zeybek koşusu',
+      'hud.score': 'Skor',
+      'hud.coins': 'Altın',
+      'hud.record': 'Rekor',
+      'hud.soundOn': 'Ses: Açık',
+      'hud.soundOff': 'Ses: Kapalı',
+      'hud.pause': 'Duraklat',
+      'hud.resume': 'Devam Et',
+      'game.ariaLabel': "Efe'nin Koşusu oyun alanı: karakter Efe önündeki engellerden zıplayarak kaçar, altın toplar ve nazar boncuğuyla korunur",
+      'start.title': 'Efe koşuya hazır',
+      'start.desc': 'Önüne çıkan kayalara, dikenli çalılara ve taş duvarlara çarpmadan olabildiğince uzağa koş. Hız gittikçe artar!',
+      'start.legend': 'Altın keseler puan katar · nazar boncuğu bir çarpışmadan seni korur',
+      'start.startBtn': 'Koşuya Başla',
+      'start.hint': 'Boşluk / Yukarı Ok / Dokun = Zıpla · P = Duraklat',
+      'start.adminBtn': 'Admin Kodu',
+      'start.adminPlaceholder': 'Admin kodunu yaz',
+      'start.adminApply': 'Uygula',
+      'start.adminNewPlaceholder': 'Yeni admin kodu belirle',
+      'start.adminChangeBtn': 'Kodu Değiştir',
+      'over.title': 'Efe düştü!',
+      'over.score': 'Skor: {n}',
+      'over.coinsEarned': '+{n} Altın kazandın',
+      'over.newRecord': 'Yeni rekor kırdın!',
+      'over.restartBtn': 'Tekrar Koş',
+      'over.topScores': 'İlk 5 Skor',
+      'over.saveCodeTitle': 'Kayıt Kodun',
+      'over.saveCodeDesc': 'Bu kodu kopyala, başka bir cihazda oyunu ilk açtığında yapıştır — ilerlemen aynen devam etsin.',
+      'over.copyBtn': 'Kodu Kopyala',
+      'leaderboard.empty': 'Henüz kayıt yok',
+      'copy.copied': 'Kopyalandı!',
+      'copy.fallback': 'Metin seçildi, Ctrl+C ile kopyala.',
+      'market.title': 'Efe Pazarı',
+      'market.desc': "Koşarken topladığın altın keselerle Efe'ye kıyafet kuşandır ya da kalıcı süper güçler edin.",
+      'market.tabChar': 'Karakterler',
+      'market.tabPower': 'Süper Güçler',
+      'market.closeBtn': 'Pazardan Çık',
+      'controls.hintHtml': '<span class="key">Boşluk</span> ya da <span class="key">↑</span> ile zıpla · <span class="key">P</span> ile duraklat · mobilde ekrana dokun',
+      'toast.speedUp': 'Efe hızlanıyor!',
+      'toast.veteranBonus': 'Pazarı tamamladığın için Simurg Efesi hediye!',
+      'toast.adminActivated': 'Admin gücü etkin!',
+      'toast.phoenixRevived': 'Küllerinden doğdun!',
+      'toast.importLoaded': 'Kayıt yüklendi!',
+      'gripanter.needName': 'Önce bir isim gir.',
+      'gripanter.invalidCode': 'Kod geçersiz.',
+      'gripanter.activated': 'Admin gücü etkin — her şeye sahipsin!',
+      'gripanter.codeSaved': 'Yeni admin kodun kaydedildi.',
+      'shop.noAbility': 'Özel bir yeteneği yok',
+      'shop.equippedBadge': '✓ Kuşanıldı',
+      'shop.equipBtn': 'Kuşan',
+      'shop.activeBadge': '✓ Aktif',
+      'shop.buyBtn': 'Satın Al',
+      'shop.notEnoughGold': 'Yetersiz Altın',
+      'floating.nazarBead': 'Nazar Boncuğu!',
+      'floating.shieldBroken': 'Kalkan Kırıldı!',
+      'floating.phoenixReborn': 'Zümrüdüanka Dirildi!',
+      'floating.hizirBreath': "Hızır'ın Nefesi!",
+      'pause.title': 'Duraklatıldı',
+      'pause.hint': 'Devam etmek için dokun ya da P tuşuna bas',
+      'province.welcomeGeneric': "Hoş geldin, {name}!"
+    },
+    en: {
+      'update.banner': "A new version of Efe's Run is ready!",
+      'update.reloadBtn': 'Update Now',
+      'nameGate.title': "Runner's Name",
+      'nameGate.desc': "Let us know who's running alongside Efe. We'll only ask for this once.",
+      'nameGate.inputPlaceholder': 'Type your name...',
+      'nameGate.submitBtn': 'Join the Run',
+      'nameGate.showImportBtn': 'Have a save code from another device?',
+      'nameGate.importPlaceholder': 'Paste your code starting with EFE1- here',
+      'nameGate.importBtn': 'Continue with Code',
+      'nameGate.importError': "That code doesn't look right — check it and try again?",
+      'title.h1': "Efe's Run",
+      'title.subtitleDefault': "A zeybek's run through the hillsides of Anatolia",
+      'title.subtitleNamed': "A zeybek's run through the hillsides of Anatolia, for {name}",
+      'hud.score': 'Score',
+      'hud.coins': 'Coins',
+      'hud.record': 'Best',
+      'hud.soundOn': 'Sound: On',
+      'hud.soundOff': 'Sound: Off',
+      'hud.pause': 'Pause',
+      'hud.resume': 'Resume',
+      'game.ariaLabel': "Efe's Run play area: Efe jumps over the obstacles ahead of him, collects gold, and is shielded by a nazar bead",
+      'start.title': 'Efe is ready to run',
+      'start.desc': "Run as far as you can without crashing into the rocks, thorny bushes, and stone walls in your way. The pace keeps climbing!",
+      'start.legend': 'Gold pouches add to your score · a nazar bead shields you from one hit',
+      'start.startBtn': 'Start Running',
+      'start.hint': 'Space / Up Arrow / Tap = Jump · P = Pause',
+      'start.adminBtn': 'Admin Code',
+      'start.adminPlaceholder': 'Enter admin code',
+      'start.adminApply': 'Apply',
+      'start.adminNewPlaceholder': 'Set a new admin code',
+      'start.adminChangeBtn': 'Change Code',
+      'over.title': 'Efe fell!',
+      'over.score': 'Score: {n}',
+      'over.coinsEarned': '+{n} coins earned',
+      'over.newRecord': 'New record!',
+      'over.restartBtn': 'Run Again',
+      'over.topScores': 'Top 5 Scores',
+      'over.saveCodeTitle': 'Your Save Code',
+      'over.saveCodeDesc': 'Copy this code and paste it the first time you open the game on another device — your progress carries right over.',
+      'over.copyBtn': 'Copy Code',
+      'leaderboard.empty': 'No scores yet',
+      'copy.copied': 'Copied!',
+      'copy.fallback': 'Text selected — press Ctrl+C to copy.',
+      'market.title': "Efe's Bazaar",
+      'market.desc': "Spend the gold pouches you collect while running to dress Efe up or unlock permanent super-powers.",
+      'market.tabChar': 'Characters',
+      'market.tabPower': 'Super Powers',
+      'market.closeBtn': 'Leave Bazaar',
+      'controls.hintHtml': '<span class="key">Space</span> or <span class="key">↑</span> to jump · <span class="key">P</span> to pause · tap the screen on mobile',
+      'toast.speedUp': 'Efe is speeding up!',
+      'toast.veteranBonus': "You get the Simurg skin for free — you cleared out the whole bazaar!",
+      'toast.adminActivated': 'Admin power activated!',
+      'toast.phoenixRevived': 'Risen from your ashes!',
+      'toast.importLoaded': 'Save loaded!',
+      'gripanter.needName': 'Enter a name first.',
+      'gripanter.invalidCode': 'Invalid code.',
+      'gripanter.activated': 'Admin power activated — you own everything now!',
+      'gripanter.codeSaved': 'Your new admin code has been saved.',
+      'shop.noAbility': 'No special ability',
+      'shop.equippedBadge': '✓ Equipped',
+      'shop.equipBtn': 'Equip',
+      'shop.activeBadge': '✓ Active',
+      'shop.buyBtn': 'Buy',
+      'shop.notEnoughGold': 'Not Enough Gold',
+      'floating.nazarBead': 'Nazar Bead!',
+      'floating.shieldBroken': 'Shield Broken!',
+      'floating.phoenixReborn': 'Phoenix Reborn!',
+      'floating.hizirBreath': "Breath of Hızır!",
+      'pause.title': 'Paused',
+      'pause.hint': 'Tap or press P to resume',
+      'province.welcomeGeneric': 'Welcome to {name}!'
+    },
+    de: {
+      'update.banner': "Eine neue Version von Efes Lauf ist bereit!",
+      'update.reloadBtn': 'Jetzt aktualisieren',
+      'nameGate.title': 'Name des Läufers',
+      'nameGate.desc': 'Wir wollen wissen, wer mit Efe läuft. Wir fragen nur dieses eine Mal danach.',
+      'nameGate.inputPlaceholder': 'Deinen Namen eingeben...',
+      'nameGate.submitBtn': 'Am Lauf teilnehmen',
+      'nameGate.showImportBtn': 'Hast du einen Speichercode von einem anderen Gerät?',
+      'nameGate.importPlaceholder': 'Füge hier deinen Code ein (beginnt mit EFE1-)',
+      'nameGate.importBtn': 'Mit Code fortfahren',
+      'nameGate.importError': 'Der Code scheint ungültig zu sein — prüf ihn und versuch es erneut?',
+      'title.h1': 'Efes Lauf',
+      'title.subtitleDefault': 'Ein Zeybek-Lauf durch die Hänge Anatoliens',
+      'title.subtitleNamed': 'Ein Zeybek-Lauf durch die Hänge Anatoliens, für {name}',
+      'hud.score': 'Punkte',
+      'hud.coins': 'Gold',
+      'hud.record': 'Rekord',
+      'hud.soundOn': 'Ton: An',
+      'hud.soundOff': 'Ton: Aus',
+      'hud.pause': 'Pause',
+      'hud.resume': 'Weiter',
+      'game.ariaLabel': 'Spielfeld von Efes Lauf: Efe springt über die Hindernisse vor ihm, sammelt Gold und wird von einer Nazar-Perle geschützt',
+      'start.title': 'Efe ist startbereit',
+      'start.desc': 'Lauf so weit du kannst, ohne gegen Felsen, Dornenbüsche oder Steinmauern zu prallen. Das Tempo steigt stetig!',
+      'start.legend': 'Goldbeutel bringen Punkte · eine Nazar-Perle schützt dich vor einem Treffer',
+      'start.startBtn': 'Lauf starten',
+      'start.hint': 'Leertaste / Pfeil hoch / Tippen = Springen · P = Pause',
+      'start.adminBtn': 'Admin-Code',
+      'start.adminPlaceholder': 'Admin-Code eingeben',
+      'start.adminApply': 'Anwenden',
+      'start.adminNewPlaceholder': 'Neuen Admin-Code festlegen',
+      'start.adminChangeBtn': 'Code ändern',
+      'over.title': 'Efe ist gestürzt!',
+      'over.score': 'Punkte: {n}',
+      'over.coinsEarned': '+{n} Gold verdient',
+      'over.newRecord': 'Neuer Rekord!',
+      'over.restartBtn': 'Nochmal laufen',
+      'over.topScores': 'Top 5 Punktzahlen',
+      'over.saveCodeTitle': 'Dein Speichercode',
+      'over.saveCodeDesc': 'Kopiere diesen Code und füge ihn beim ersten Öffnen des Spiels auf einem anderen Gerät ein — dein Fortschritt bleibt erhalten.',
+      'over.copyBtn': 'Code kopieren',
+      'leaderboard.empty': 'Noch keine Einträge',
+      'copy.copied': 'Kopiert!',
+      'copy.fallback': 'Text markiert — mit Strg+C kopieren.',
+      'market.title': 'Efes Basar',
+      'market.desc': 'Gib die Goldbeutel, die du beim Laufen sammelst, für Efes Outfits oder dauerhafte Superkräfte aus.',
+      'market.tabChar': 'Charaktere',
+      'market.tabPower': 'Superkräfte',
+      'market.closeBtn': 'Basar verlassen',
+      'controls.hintHtml': '<span class="key">Leertaste</span> oder <span class="key">↑</span> zum Springen · <span class="key">P</span> für Pause · auf Mobilgeräten Bildschirm antippen',
+      'toast.speedUp': 'Efe wird schneller!',
+      'toast.veteranBonus': 'Du bekommst den Simurg-Skin geschenkt — du hast den ganzen Basar leergekauft!',
+      'toast.adminActivated': 'Admin-Modus aktiviert!',
+      'toast.phoenixRevived': 'Du bist aus deiner Asche auferstanden!',
+      'toast.importLoaded': 'Speicherstand geladen!',
+      'gripanter.needName': 'Gib zuerst einen Namen ein.',
+      'gripanter.invalidCode': 'Ungültiger Code.',
+      'gripanter.activated': 'Admin-Modus aktiviert — dir gehört jetzt alles!',
+      'gripanter.codeSaved': 'Dein neuer Admin-Code wurde gespeichert.',
+      'shop.noAbility': 'Keine besondere Fähigkeit',
+      'shop.equippedBadge': '✓ Ausgerüstet',
+      'shop.equipBtn': 'Ausrüsten',
+      'shop.activeBadge': '✓ Aktiv',
+      'shop.buyBtn': 'Kaufen',
+      'shop.notEnoughGold': 'Nicht genug Gold',
+      'floating.nazarBead': 'Nazar-Perle!',
+      'floating.shieldBroken': 'Schild zerbrochen!',
+      'floating.phoenixReborn': 'Phönix wiedergeboren!',
+      'floating.hizirBreath': 'Atem des Hızır!',
+      'pause.title': 'Pausiert',
+      'pause.hint': 'Tippen oder P drücken, um fortzufahren',
+      'province.welcomeGeneric': 'Willkommen in {name}!'
+    }
+  };
+
+  function t(key, vars){
+    var dict = I18N[currentLang] || I18N.tr;
+    var str = dict[key];
+    if (str == null) str = I18N.tr[key] != null ? I18N.tr[key] : key;
+    if (vars){
+      for (var vk in vars){
+        if (vars.hasOwnProperty(vk)) str = str.split('{'+vk+'}').join(vars[vk]);
+      }
+    }
+    return str;
+  }
+
+  // per-item translations for shop cards; Turkish text lives on the SKINS/POWERS
+  // objects themselves (below) and is used directly when currentLang === 'tr'
+  var SKIN_I18N = {
+    en: {
+      aydin:{ name:'Aydın Efesi', tagline:'The first face of the Aegean zeybeks — the colors of the village you were born in.' },
+      soke:{ name:'Söke Efesi', tagline:'The nimble stride of the Söke plain, sashed in golden yellow.', perk:'Nimble Leap — jumps 8% higher' },
+      milas:{ name:'Milas Efesi', tagline:'Efe of the olive groves, dressed in the green of the land.', perk:'Fertile Soil — +1 extra gold per coin' },
+      bodrum:{ name:'Bodrum Efesi', tagline:'The unyielding efe of the coastline, sashed in coral.', perk:'Wave Shield — starts every run with a shield' },
+      aga:{ name:'Zeybek Ağası', tagline:'The most respected efe of the region, gold-embroidered from head to toe.', perk:"Ağa's Stance — combo scores hit 50% harder" },
+      simurg:{ name:'Simurg Efesi', tagline:'Its wing carried down from Mount Kaf — bearing the wisdom of the legendary bird.', perk:'Featherlight Wings — jumps 15% higher' },
+      karakoncolos:{ name:'Karakoncolos', tagline:"Blocks the road on winter's coldest nights — but he won't lay a hand on you.", perk:"Winter's Might — nazar beads appear 30% more often" },
+      koroglu:{ name:'Köroğlu', tagline:'Astride Kırat, the valiant efe of Çamlıbel.', perk:"Kırat's Might — combo scores hit 75% harder" },
+      tepegoz:{ name:'Tepegöz', tagline:'The one-eyed giant of the Dede Korkut epic — devours anything in his path.', perk:'Giant Appetite — +2 extra gold per coin' },
+      hizir:{ name:'Hızır', tagline:'The green-robed saint who appears when you need him most.', perk:"Hızır's Grace — starts with a shield, combos hit 30% harder" }
+    },
+    de: {
+      aydin:{ name:'Aydın Efesi', tagline:'Das Ur-Gesicht der ägäischen Zeybeks — die Farben deines Heimatdorfs.' },
+      soke:{ name:'Söke Efesi', tagline:'Der wendige Schritt der Söke-Ebene, mit goldgelber Schärpe.', perk:'Wendiger Sprung — springt 8 % höher' },
+      milas:{ name:'Milas Efesi', tagline:'Efe der Olivenhaine, gekleidet in das Grün der Erde.', perk:'Fruchtbarer Boden — +1 zusätzliches Gold pro Münze' },
+      bodrum:{ name:'Bodrum Efesi', tagline:'Der unbeugsame Efe der Küste, mit korallenroter Schärpe.', perk:'Wellenschild — startet jeden Lauf mit einem Schild' },
+      aga:{ name:'Zeybek Ağası', tagline:'Der angesehenste Efe der Region, von Kopf bis Fuß goldbestickt.', perk:'Ağa-Haltung — Kombopunkte 50 % stärker' },
+      simurg:{ name:'Simurg Efesi', tagline:'Trägt Schwingen vom Kaf-Berg — die Weisheit des legendären Vogels in sich.', perk:'Federleichte Schwingen — springt 15 % höher' },
+      karakoncolos:{ name:'Karakoncolos', tagline:'Versperrt in den kältesten Winternächten den Weg — doch dir tut er nichts.', perk:'Winterkraft — Nazar-Perlen erscheinen 30 % häufiger' },
+      koroglu:{ name:'Köroğlu', tagline:'Auf dem Rücken Kırats, der tapfere Efe von Çamlıbel.', perk:'Kırats Kraft — Kombopunkte 75 % stärker' },
+      tepegoz:{ name:'Tepegöz', tagline:'Der einäugige Riese aus dem Dede-Korkut-Epos — verschlingt alles, was ihm in den Weg kommt.', perk:'Gigantischer Appetit — +2 zusätzliches Gold pro Münze' },
+      hizir:{ name:'Hızır', tagline:'Der grün gewandete Heilige, der erscheint, wenn man ihn am dringendsten braucht.', perk:'Hızırs Gnade — startet mit Schild, Kombopunkte 30 % stärker' }
+    }
+  };
+
+  var POWER_I18N = {
+    en: {
+      comboMaster:{ name:"Zeybek's Resolve", tagline:'Extends the combo window, making back-to-back coin pickups easier.' },
+      nimble:{ name:'Nimble Feet', tagline:'Permanently increases jump power.' },
+      luckyShield:{ name:'Lucky Nazar', tagline:'Nazar beads appear far more often throughout the run.' },
+      magnet:{ name:'Gold Magnet', tagline:'Every gold pouch and nazar bead on screen flies straight to you.' },
+      secondWind:{ name:'Second Wind', tagline:"No matter what you're wearing, every run starts with a shield ready to go." },
+      karakoncolosBuzu:{ name:"Karakoncolos's Frost", tagline:'Your speed climbs more slowly through the run, making long runs easier.' },
+      simurgKanadi:{ name:"Simurg's Wing", tagline:'Jump once more while airborne — a true double jump.' },
+      koroatKirati:{ name:"Köroğlu's Kırat", tagline:"Run like Kırat — your top speed rises, tougher but worth more points." },
+      hizirNefesi:{ name:'Breath of Hızır', tagline:'If you have no shield, a magical one renews itself at regular intervals.' },
+      zumrutankaKulu:{ name:'Ashes of the Phoenix', tagline:'The first time you fall, rise from your ashes and keep running.' }
+    },
+    de: {
+      comboMaster:{ name:'Zeybek-Entschlossenheit', tagline:'Verlängert das Kombo-Fenster — Münzen nacheinander einzusammeln wird leichter.' },
+      nimble:{ name:'Flinke Füße', tagline:'Erhöht die Sprungkraft dauerhaft.' },
+      luckyShield:{ name:'Glücks-Nazar', tagline:'Nazar-Perlen erscheinen während des Laufs deutlich häufiger.' },
+      magnet:{ name:'Goldmagnet', tagline:'Jeder Goldbeutel und jede Nazar-Perle auf dem Bildschirm fliegt sofort zu dir.' },
+      secondWind:{ name:'Zweiter Atem', tagline:'Egal was du trägst, jeder Lauf beginnt mit einem einsatzbereiten Schild.' },
+      karakoncolosBuzu:{ name:"Karakoncolos' Frost", tagline:'Deine Geschwindigkeit steigt während des Laufs langsamer — lange Läufe werden leichter.' },
+      simurgKanadi:{ name:'Simurgs Schwinge', tagline:'Springe in der Luft noch einmal — ein echter Doppelsprung.' },
+      koroatKirati:{ name:'Köroğlus Kırat', tagline:'Lauf wie Kırat — deine Höchstgeschwindigkeit steigt: schwerer, aber mehr Punkte.' },
+      hizirNefesi:{ name:'Atem des Hızır', tagline:'Hast du keinen Schild, erneuert sich in festen Abständen ein magischer von selbst.' },
+      zumrutankaKulu:{ name:'Asche des Phönix', tagline:'Beim ersten Sturz erhebst du dich aus deiner Asche und läufst weiter.' }
+    }
+  };
+
+  function skinName(skin){
+    var d = SKIN_I18N[currentLang] && SKIN_I18N[currentLang][skin.id];
+    return (currentLang !== 'tr' && d) ? d.name : skin.name;
+  }
+  function skinTagline(skin){
+    var d = SKIN_I18N[currentLang] && SKIN_I18N[currentLang][skin.id];
+    return (currentLang !== 'tr' && d) ? d.tagline : skin.tagline;
+  }
+  function skinPerkLabel(skin){
+    if (!skin.perk) return t('shop.noAbility');
+    var d = SKIN_I18N[currentLang] && SKIN_I18N[currentLang][skin.id];
+    return (currentLang !== 'tr' && d && d.perk) ? d.perk : skin.perk.label;
+  }
+  function powerName(power){
+    var d = POWER_I18N[currentLang] && POWER_I18N[currentLang][power.id];
+    return (currentLang !== 'tr' && d) ? d.name : power.name;
+  }
+  function powerTagline(power){
+    var d = POWER_I18N[currentLang] && POWER_I18N[currentLang][power.id];
+    return (currentLang !== 'tr' && d) ? d.tagline : power.tagline;
+  }
+
+  // the Azerbaijan border-crossing lines are an intentional Azerbaijani-language
+  // easter egg (even Turkish players see foreign text there) — only the regular
+  // Turkish-province welcome banners get translated for en/de players
+  function getProvinceWelcome(prov){
+    if (currentLang === 'tr' || prov.country === 'AZ') return prov.welcome;
+    return t('province.welcomeGeneric', { name: prov.name });
+  }
+
+  function applyLanguage(lang){
+    if (['tr','en','de'].indexOf(lang) === -1) lang = 'tr';
+    currentLang = lang;
+    try { localStorage.setItem(LANG_KEY, lang); } catch(e){}
+    document.documentElement.lang = lang;
+
+    var i, nodes = document.querySelectorAll('[data-i18n]');
+    for (i=0;i<nodes.length;i++){ nodes[i].textContent = t(nodes[i].getAttribute('data-i18n')); }
+    var htmlNodes = document.querySelectorAll('[data-i18n-html]');
+    for (i=0;i<htmlNodes.length;i++){ htmlNodes[i].innerHTML = t(htmlNodes[i].getAttribute('data-i18n-html')); }
+    var phNodes = document.querySelectorAll('[data-i18n-placeholder]');
+    for (i=0;i<phNodes.length;i++){ phNodes[i].placeholder = t(phNodes[i].getAttribute('data-i18n-placeholder')); }
+
+    canvas.setAttribute('aria-label', t('game.ariaLabel'));
+    applyUsername();
+    renderLeaderboard(loadLeaderboard(), state === 'gameover' ? score : -1);
+    muteBtn.textContent = muted ? t('hud.soundOff') : t('hud.soundOn');
+    pauseBtn.textContent = (state === 'paused') ? t('hud.resume') : t('hud.pause');
+    if (marketOpen){ buildShopGrid(); buildPowersGrid(); }
+    if (state === 'gameover'){
+      finalScoreText.textContent = t('over.score', { n:score });
+      runCoinsText.textContent = t('over.coinsEarned', { n:runCoinsCollected });
+    }
+    for (i=0;i<langButtons.length;i++){
+      langButtons[i].classList.toggle('active', langButtons[i].getAttribute('data-lang') === currentLang);
+    }
+  }
+  for (var li=0; li<langButtons.length; li++){
+    langButtons[li].addEventListener('click', function(){ applyLanguage(this.getAttribute('data-lang')); });
+  }
+
   // ---------- keep everyone on the latest published build ----------
   // some browsers/devices hang on to a cached copy of this page, so we
   // periodically re-fetch the live URL (bypassing cache) and compare the
@@ -1012,8 +1415,8 @@
 
   function applyUsername(){
     subtitleText.textContent = username
-      ? username + ' için Anadolu yamaçlarında bir zeybek koşusu'
-      : 'Anadolu yamaçlarında bir zeybek koşusu';
+      ? t('title.subtitleNamed', { name: username })
+      : t('title.subtitleDefault');
   }
   function submitName(){
     var v = (nameInput.value || '').trim().slice(0,18);
@@ -1031,7 +1434,7 @@
   } else {
     nameGate.classList.remove('hidden');
   }
-  applyUsername();
+  applyLanguage(currentLang);
   nameSubmitBtn.addEventListener('click', submitName);
   nameInput.addEventListener('keydown', function(e){
     if (e.key === 'Enter'){ e.preventDefault(); submitName(); }
@@ -1099,7 +1502,7 @@
     updateWalletDisplays();
     resetGame();
     grantVeteranBonusIfEligible();
-    showToast('Kayıt yüklendi!');
+    showToast(t('toast.importLoaded'));
   });
 
   copySaveBtn.addEventListener('click', function(){
@@ -1108,12 +1511,12 @@
     function fallbackCopy(){
       var ok = false;
       try { ok = document.execCommand('copy'); } catch(e){}
-      copyStatus.textContent = ok ? 'Kopyalandı!' : 'Metin seçildi, Ctrl+C ile kopyala.';
+      copyStatus.textContent = ok ? t('copy.copied') : t('copy.fallback');
       setTimeout(function(){ copyStatus.textContent = ''; }, 3000);
     }
     if (navigator.clipboard && navigator.clipboard.writeText){
       navigator.clipboard.writeText(saveCodeOutput.value).then(function(){
-        copyStatus.textContent = 'Kopyalandı!';
+        copyStatus.textContent = t('copy.copied');
         setTimeout(function(){ copyStatus.textContent = ''; }, 3000);
       }).catch(fallbackCopy);
     } else {
@@ -1139,7 +1542,7 @@
   }
   function renderLeaderboard(lb, highlightScore){
     if (!lb.length){
-      leaderboardList.innerHTML = '<li class="lb-empty">Henüz kayıt yok</li>';
+      leaderboardList.innerHTML = '<li class="lb-empty">' + t('leaderboard.empty') + '</li>';
       return;
     }
     var html = '';
@@ -1311,7 +1714,7 @@
     shopState.veteranBonusGranted = true;
     shopState.owned.push('simurg');
     saveShop();
-    showToast('Pazarı tamamladığın için Simurg Efesi hediye!');
+    showToast(t('toast.veteranBonus'));
   }
 
   // ---------- "gripanter" mode (debug/QA only — shown to players as "Admin") ----------
@@ -1457,29 +1860,29 @@
         drawPortrait(pctx, skin, pw, ph);
 
         var h3 = document.createElement('h3');
-        h3.textContent = skin.name;
+        h3.textContent = skinName(skin);
         card.appendChild(h3);
 
         var tag = document.createElement('p');
         tag.className = 'shop-tagline';
-        tag.textContent = skin.tagline;
+        tag.textContent = skinTagline(skin);
         card.appendChild(tag);
 
         var perkEl = document.createElement('p');
         perkEl.className = 'shop-perk';
-        perkEl.textContent = skin.perk ? skin.perk.label : 'Özel bir yeteneği yok';
+        perkEl.textContent = skinPerkLabel(skin);
         card.appendChild(perkEl);
 
         if (equipped){
           var badge = document.createElement('div');
           badge.className = 'shop-badge';
-          badge.textContent = '✓ Kuşanıldı';
+          badge.textContent = t('shop.equippedBadge');
           card.appendChild(badge);
         } else if (owned){
           var equipBtn = document.createElement('button');
           equipBtn.type = 'button';
           equipBtn.className = 'shop-btn equip-btn';
-          equipBtn.textContent = 'Kuşan';
+          equipBtn.textContent = t('shop.equipBtn');
           equipBtn.addEventListener('click', function(){
             shopState.equipped = skin.id;
             saveShop();
@@ -1501,7 +1904,7 @@
           buyBtn.type = 'button';
           buyBtn.className = 'shop-btn';
           var canAfford = shopState.wallet >= skin.price;
-          buyBtn.textContent = canAfford ? 'Satın Al' : 'Yetersiz Altın';
+          buyBtn.textContent = canAfford ? t('shop.buyBtn') : t('shop.notEnoughGold');
           buyBtn.disabled = !canAfford;
           buyBtn.addEventListener('click', function(){
             if (shopState.wallet < skin.price) return;
@@ -1531,18 +1934,18 @@
         card.className = 'shop-card' + (owned ? ' equipped' : '') + (power.mystic ? ' mystic' : '');
 
         var h3 = document.createElement('h3');
-        h3.textContent = power.name;
+        h3.textContent = powerName(power);
         card.appendChild(h3);
 
         var tag = document.createElement('p');
         tag.className = 'shop-tagline';
-        tag.textContent = power.tagline;
+        tag.textContent = powerTagline(power);
         card.appendChild(tag);
 
         if (owned){
           var badge = document.createElement('div');
           badge.className = 'shop-badge';
-          badge.textContent = '✓ Aktif';
+          badge.textContent = t('shop.activeBadge');
           card.appendChild(badge);
         } else {
           var priceRow = document.createElement('div');
@@ -1620,26 +2023,26 @@
   gripanterSubmitBtn.addEventListener('click', function(){
     ensureAudio();
     if (!username){
-      gripanterStatus.textContent = 'Önce bir isim gir.';
+      gripanterStatus.textContent = t('gripanter.needName');
       return;
     }
     if (!isValidGripanterCode(gripanterInput.value)){
-      gripanterStatus.textContent = 'Kod geçersiz.';
+      gripanterStatus.textContent = t('gripanter.invalidCode');
       setGripanterSection.classList.add('hidden');
       return;
     }
     grantGripanter();
     resetGame();
-    gripanterStatus.textContent = 'Admin gücü etkin — her şeye sahipsin!';
+    gripanterStatus.textContent = t('gripanter.activated');
     setGripanterSection.classList.remove('hidden');
-    showToast('Admin gücü etkin!');
+    showToast(t('toast.adminActivated'));
   });
   setGripanterBtn.addEventListener('click', function(){
     var v = (newGripanterInput.value || '').trim();
     if (!v) return;
     try { localStorage.setItem(GRIPANTER_CODE_KEY, v); } catch(e){}
     newGripanterInput.value = '';
-    gripanterStatus.textContent = 'Yeni admin kodun kaydedildi.';
+    gripanterStatus.textContent = t('gripanter.codeSaved');
   });
 
   // ---------- audio (synthesized, no assets) ----------
@@ -1678,7 +2081,7 @@
 
   muteBtn.addEventListener('click', function(){
     muted = !muted;
-    muteBtn.textContent = muted ? 'Ses: Kapalı' : 'Ses: Açık';
+    muteBtn.textContent = muted ? t('hud.soundOff') : t('hud.soundOn');
     if (!muted) ensureAudio();
   });
 
@@ -2051,8 +2454,8 @@
 
   // ---------- input ----------
   function togglePause(){
-    if (state === 'playing'){ state = 'paused'; pauseBtn.textContent = 'Devam Et'; }
-    else if (state === 'paused'){ state = 'playing'; lastT = null; pauseBtn.textContent = 'Duraklat'; }
+    if (state === 'playing'){ state = 'paused'; pauseBtn.textContent = t('hud.resume'); }
+    else if (state === 'paused'){ state = 'playing'; lastT = null; pauseBtn.textContent = t('hud.pause'); }
   }
 
   function tryJump(){
@@ -2105,7 +2508,7 @@
   function startGame(){
     resetGame();
     state = 'playing';
-    pauseBtn.textContent = 'Duraklat';
+    pauseBtn.textContent = t('hud.pause');
     startOverlay.classList.add('hidden');
     overOverlay.classList.add('hidden');
   }
@@ -2274,7 +2677,7 @@
     }
     if (Math.floor(score/300) > lastSpeedToast){
       lastSpeedToast = Math.floor(score/300);
-      showToast('Efe hızlanıyor!');
+      showToast(t('toast.speedUp'));
     }
 
     var targetRunStep = Math.floor(score / PROVINCE_SCORE_STEP);
@@ -2289,7 +2692,7 @@
       ctx.font = "800 14px 'Nunito Sans', sans-serif";
       var signW = Math.max(132, ctx.measureText(signLabel).width + 62);
       provinceSign = { x: GW + 30, w: signW, h: 96, name: PROVINCES[provinceIdx].name, plate: PROVINCES[provinceIdx].plate };
-      showToast(PROVINCES[provinceIdx].welcome);
+      showToast(getProvinceWelcome(PROVINCES[provinceIdx]));
       sfxProvince();
     }
     if (provinceBlending){
@@ -2320,7 +2723,7 @@
       if (autoShieldTimer <= 0){
         efe.shield = true;
         autoShieldTimer = perks.autoShieldInterval;
-        spawnFloatingText(efe.x + efe.w*0.5, efe.y - 10, 'Hızır\'ın Nefesi!', 'rgba(30,95,174,');
+        spawnFloatingText(efe.x + efe.w*0.5, efe.y - 10, t('floating.hizirBreath'), 'rgba(30,95,174,');
         sfxShieldGet();
       }
     }
@@ -2426,7 +2829,7 @@
         if (shNear || shSweep){
           sh.collected = true;
           efe.shield = true;
-          spawnFloatingText(sh.x, sh.y-8, 'Nazar Boncuğu!', 'rgba(30,95,174,');
+          spawnFloatingText(sh.x, sh.y-8, t('floating.nazarBead'), 'rgba(30,95,174,');
           sfxShieldGet();
         }
       }
@@ -2450,7 +2853,7 @@
           efe.shield = false;
           efe.invulnTimer = 1.0;
           spawnBurst(efeCx, efeCy, 'rgba(30,95,174,', 'rgba(238,246,251,');
-          spawnFloatingText(efeCx, efe.y-6, 'Kalkan Kırıldı!', 'rgba(30,95,174,');
+          spawnFloatingText(efeCx, efe.y-6, t('floating.shieldBroken'), 'rgba(30,95,174,');
           sfxShieldBreak();
           shakeT = 0.2; shakeMag = 6;
         } else if (perks.phoenixRevive && !phoenixUsed){
@@ -2459,8 +2862,8 @@
           efe.vy = JUMP_V * 0.7;
           efe.onGround = false;
           spawnBurst(efeCx, efeCy, 'rgba(227,178,60,', 'rgba(162,46,46,');
-          spawnFloatingText(efeCx, efe.y-6, 'Zümrüdüanka Dirildi!', 'rgba(227,178,60,');
-          showToast('Küllerinden doğdun!');
+          spawnFloatingText(efeCx, efe.y-6, t('floating.phoenixReborn'), 'rgba(227,178,60,');
+          showToast(t('toast.phoenixRevived'));
           sfxProvince();
           shakeT = 0.3; shakeMag = 8;
         } else {
@@ -2522,8 +2925,8 @@
       spawnConfetti();
     }
     highOut.textContent = highScore;
-    finalScoreText.textContent = 'Skor: ' + score;
-    runCoinsText.textContent = '+' + runCoinsCollected + ' Altın kazandın';
+    finalScoreText.textContent = t('over.score', { n:score });
+    runCoinsText.textContent = t('over.coinsEarned', { n:runCoinsCollected });
     newRecordText.classList.toggle('hidden', !isRecord);
 
     var lb = saveScoreToLeaderboard(score);
@@ -3263,10 +3666,10 @@
     ctx.fillStyle = '#e3b23c';
     ctx.font = "400 30px 'Yeseva One', serif";
     ctx.textAlign = 'center';
-    ctx.fillText('Duraklatıldı', GW/2, GH/2-6);
+    ctx.fillText(t('pause.title'), GW/2, GH/2-6);
     ctx.fillStyle = '#f4e4c4';
     ctx.font = "600 13px 'Nunito Sans', sans-serif";
-    ctx.fillText('Devam etmek için dokun ya da P tuşuna bas', GW/2, GH/2+22);
+    ctx.fillText(t('pause.hint'), GW/2, GH/2+22);
     ctx.restore();
   }
 
